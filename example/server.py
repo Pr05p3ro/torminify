@@ -1,14 +1,10 @@
 import tornado.ioloop
 import tornado.web
 import sys
-import os
 from tornado import autoreload
 from base import Index
 from tornado.options import define, options 
 from torminify.minify import Minify
-
-module_dir = os.path.dirname(os.path.realpath(__file__))+"/"
-os.chdir(module_dir) #temp fix for supervisor
 
 class Application(tornado.web.Application):
     def before_reload_done(self):

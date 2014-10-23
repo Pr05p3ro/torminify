@@ -4,6 +4,7 @@ import yaml
 from tornado import autoreload
 from subprocess import call
 from tornado import template
+from shutil import copyfile
 
 class Minify:
     version = 0.1
@@ -20,7 +21,11 @@ class Minify:
         'yui_path': module_dir+'tools/yui.jar',
         'closure_path': module_dir+'tools/compiler.jar',
         'js_loader': {'file':module_dir+'config/minify/loader.js','name':'loader'},
-        'templates_dir': 'templates/'
+        'templates_dir': 'templates/',
+        'static_domain': '',
+        'minify_css': True,
+        'minify_js': True,
+        'batch_css': False
     }
 
     templates = []
@@ -175,10 +180,18 @@ class Minify:
         self.save_cache()
 
     def minify_css(self, fileSrc, fileDst):
-        call(self.settings['java_path']+" -jar "+self.settings['yui_path']+" "+self.settings['yui_additional_params']+" " + fileSrc + " -o " + self.settings['web_root']+fileDst, shell=True)
+        if self.settings['minify_css']:
+            print('minify')
+            call(self.settings['java_path']+" -jar "+self.settings['yui_path']+" "+self.settings['yui_additional_params']+" " + fileSrc + " -o " + self.settings['web_root']+fileDst, shell=True)
+        else: 
+            print('copy')
+            copyfile(fileSrc, self.settings['web_root']+fileDst)
 
     def minify_js(self, fileSrc, fileDst):
-        call(self.settings['java_path']+" -jar "+self.settings['closure_path']+" "+self.settings['closure_additional_params']+" --js " + fileSrc + " --js_output_file " + self.settings['web_root']+fileDst, shell=True)
+        if self.settings['minify_js']:
+            call(self.settings['java_path']+" -jar "+self.settings['closure_path']+" "+self.settings['closure_additional_params']+" --js " + fileSrc + " --js_output_file " + self.settings['web_root']+fileDst, shell=True)
+        else:
+            copyfile(fileSrc, self.settings['web_root']+fileDst)
 
     def save_cache(self):
         new_cache = []
@@ -235,13 +248,13 @@ class Minify:
                     l.append({
                         'name':f['name'],
                         'extends':f['extends'],
-                        'js':f['minified'],
+                        'js':self.settings['static_domain']+"/"+f['minified'],
                         'version':f['version']
                     })
                 else:
                     l.append({
                         'name':f['name'],
-                        'js':f['minified'],
+                        'js':self.settings['static_domain']+"/"+f['minified'],
                         'version':f['version']
                     })
 
@@ -253,7 +266,7 @@ class Minify:
             if 'name' not in f and f['file']!=self.settings['css_inlined']:
                 if s != "['":
                     s += ",'"
-                s += f['minified']+"?"+str(f['version'])+"'"
+                s += self.settings['static_domain']+"/"+f['minified']+"?"+str(f['version'])+"'"
 
         return s+"]"
 

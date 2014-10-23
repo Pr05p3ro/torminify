@@ -1,5 +1,13 @@
 ---
+#Uncomment this if you have separate domain for static files (recommended)
 static_domain: http://st1.fornity.com
+
+#disable to speed up server reboot while developing. 
+minify_css: True
+minify_js: True
+
+#enable if you want to combine separate css files into one big minified file
+batch_css: False
 
 java_path: /usr/java/jre/bin/java
 yui_path: /var/www/lgg/tools/yui.jar
