@@ -1,0 +1,19 @@
+---
+#list of css files that will be watched and minified on change
+css_files:
+    - static/css/main.css
+
+#similar list with js files
+#each js should have name, path to file relative to root_dir and can have extends field
+#extends is the list of all names of js files that should be loaded BEFORE current file
+js_files:
+    - file: static/js/u.js
+      name: u
+    - file: static/js/application.js
+      name: app
+      extends:
+          - u
+
+#this tempplates will be cached in memory on servers init. Read more in documentation.
+preload_templates:
+    - index.html

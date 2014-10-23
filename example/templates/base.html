@@ -1,0 +1,22 @@
+{% autoescape None %}<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% end %}AppCharts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    {% if css_inlined != "" %}<style type="text/css">{{ css_inlined }}</style>{% end %}
+  </head>
+  <body id="app" class="wrap wider">
+    <div class="page-header">
+      <div class="grid">
+        <div class="unit whole">
+          <a class="logo" href="/" title="Fornity"></a>
+            <ul class="nav">
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    {% block body %}{% end %}
+    <script>{{css_js_loader}}</script>
+  </body>
+</html>

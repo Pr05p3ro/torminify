@@ -1,0 +1,24 @@
+---
+static_domain: http://st1.fornity.com
+
+java_path: /usr/java/jre/bin/java
+yui_path: /var/www/lgg/tools/yui.jar
+closure_path: /var/www/lgg/tools/compiler.jar
+#closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
+#yui_additional_params: --line-break 0
+
+#directiories where minified versions of files will be stored, could be same (relative to web root)
+css_min_dir: static/min/
+js_min_dir: static/min/
+
+#this file will be inlined inside <head> tag for better performance. 
+#Comment it out if you do not need this (relative to web root)
+css_inlined: static/css/inlined.css
+
+#uncomment this section to use your own js loader. Read more in documentation.
+js_loader: 
+    file: config/minify/loader.js
+    name: loader
+
+#directory with templates inside your project
+templates_dir: templates/
