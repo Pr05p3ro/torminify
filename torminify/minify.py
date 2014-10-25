@@ -7,7 +7,7 @@ from tornado import template
 from shutil import copyfile
 
 class Minify:
-    version = 0.1
+    version = "0.1.1"
 
     cache = []
     settings = {
