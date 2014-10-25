@@ -5,9 +5,9 @@ minify_css: True
 minify_js: True
 #batch_css: False
 
-java_path: java
-#yui_path: /var/www/lgg/tools/yui.jar
-#closure_path: /var/www/lgg/tools/compiler.jar
+java_path: /usr/java/jre/bin/java
+yui_path: tools/yui.jar
+closure_path: tools/compiler.jar
 #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
 #yui_additional_params: --line-break 0
 

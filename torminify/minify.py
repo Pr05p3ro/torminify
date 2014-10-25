@@ -8,7 +8,6 @@ from shutil import copyfile
 
 class Minify:
     version = 0.1
-    module_dir = os.path.dirname(os.path.realpath(__file__))+"/"
 
     cache = []
     settings = {
@@ -18,9 +17,8 @@ class Minify:
         'css_inlined': '',
         'css_files': [],
         'js_files': [],
-        'yui_path': module_dir+'tools/yui.jar',
-        'closure_path': module_dir+'tools/compiler.jar',
-        'js_loader': {'file':module_dir+'config/minify/loader.js','name':'loader'},
+        'yui_path': '',
+        'closure_path': '',
         'templates_dir': 'templates/',
         'static_domain': '',
         'minify_css': True,
@@ -46,7 +44,7 @@ class Minify:
     def before_reload_done(self):
         self.recompile()
 
-    def __init__(self, config=module_dir+'config/minify/minify.yaml', watch='config/minify/watch.yaml', web_root='/var/www', cache_index=module_dir+'cache/minify_cache.yaml', debug=False):
+    def __init__(self, config, watch, web_root, cache_index, debug=False):
         autoreload.watch(config)
         autoreload.watch(watch)        
         autoreload.add_reload_hook(self.before_reload_done)
@@ -57,6 +55,9 @@ class Minify:
         self.load_config(config)
         self.load_config(watch)
         
+        if not os.path.exists(cache_index):
+            os.makedirs(cache_index)
+
         self.settings['web_root'] = web_root
         self.cache_index = cache_index
         self.debug = debug
