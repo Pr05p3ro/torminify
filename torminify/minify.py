@@ -43,9 +43,14 @@ class Minify:
 
             f.close()
 
+    def before_reload_done(self):
+        self.recompile()
+
     def __init__(self, config=module_dir+'config/minify/minify.yaml', watch='config/minify/watch.yaml', web_root='/var/www', cache_index=module_dir+'cache/minify_cache.yaml', debug=False):
         autoreload.watch(config)
-        autoreload.watch(watch)
+        autoreload.watch(watch)        
+        autoreload.add_reload_hook(self.before_reload_done)
+
         self.log('config '+config)
         self.log('watch '+watch)
 

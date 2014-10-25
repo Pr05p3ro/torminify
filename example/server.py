@@ -7,12 +7,7 @@ from tornado.options import define, options
 from torminify.minify import Minify
 
 class Application(tornado.web.Application):
-    def before_reload_done(self):
-        self.minify.recompile()
-
-    def intialize_reload_hook(self, debug):
-        autoreload.add_reload_hook(self.before_reload_done)
-
+    
     def __init__(self):
         debug = True
         
@@ -29,8 +24,6 @@ class Application(tornado.web.Application):
             autoreload = debug,
             minify = self.minify
         )
-
-        self.intialize_reload_hook(settings['debug'])
 
         handlers = [
             (r"/", Index)

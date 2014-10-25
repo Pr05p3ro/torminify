@@ -41,6 +41,10 @@ server {
 
 /etc/nginx/sites/torminify-demo.fornity.com
 
+upstream demo {
+    server 127.0.0.1:8889;
+}
+
 server {
     listen 80;
 	server_name torminify-demo.fornity.com;
@@ -55,23 +59,142 @@ server {
     }
 }
 
+Импортируйте библиотеку (пример )
 
+from torminify.minify import Minify
 
+и создайте экземпляр класса 
 
+self.minify = Minify(
+    config='config/minify/minify.yaml', # Файл с основными настройками модуля
+    watch='config/minify/watch.yaml', # Перечень css, js и шаблонов, изменения в которых будут отслеживаться
+    web_root='/var/www/torminify-demo/', # Корневая директория домена со статикой
+    cache_index='cache/minify_cache.yaml', # Служебный файл в котором torminify будет хранить время изменения отслеживаемых файлов
+    debug=True)
 
+Настройте модуль в файле config/minify/minify.yaml
 
+---
+#Если Вы используете отдельный домен для статики - укажите его или закомментируйте параметр static_domain
+static_domain: http://st1.fornity.com
 
+#Отключите минификацию, чтобы ускорить перезагрузку приложения во время разработки
+minify_css: True
+minify_js: True
 
+#Раскомментируйте этот параметр, если хотите, чтобы torminify собирал все таблицы стилей в один файл.
+#По умолчанию они будут минфицироваться отдельно и загружаться асинхронно
+#batch_css: False
 
+#Укажите путь к java на вашем сервере (или просто java, если JAVA_HOME настроена корректно)
+java_path: /usr/java/jre/bin/java
 
+#Укажите пути к yui compressor и google closure compiler и дополнительные параметры, если необходимо. По умолчанию будут использоваться утилиты, включенные в torminify
+#yui_path: /var/www/lgg/tools/yui.jar
+#closure_path: /var/www/lgg/tools/compiler.jar
+#closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
+#yui_additional_params: --line-break 0
 
+#Директории, куда torminify будет сохранять минифицированные файлы (относительно корневой директории домена со статикой)
+css_min_dir: static/min/
+js_min_dir: static/min/
 
+#Этот файл будет минифицирован и его содержимое будет помещено в тег <head> 
+#Закоментируйте параметр, если не хотите использовать эту возможность
+css_inlined: static/css/inlined.css
 
+#Асинхронный загрузчик javascript и css. Этот файл будет минифицирован и встроен в шаблон страницы.
+#Если секция закомментирована - по умолчанию будет использоваться загрузчик из модуля.
+js_loader: 
+    file: config/minify/loader.js
+    name: loader
 
+#Директория с шаблонами (относительно корневой директории Вашего приложения)
+templates_dir: templates/
 
+Добавьте в watch.yaml файлы, изменения в которых должен отслеживать torminify
 
+---
+#Список таблиц стилей
+css_files:
+    - static/css/main.css
 
+#Аналогичный список скриптов
+#Каждый js файл должен иметь имя, путь к файлу относительно корневой директории домена со статикой и опционально может содержать параметр extends со списком имен файлов от которого он зависит.
+#Если указаны зависимости - файл будет загружен только после загрузки всех его зависимостей
+#К примеру, это нужно для того, чтобы плагины jQuery не загружались асинхронно до самого jQuery
 
+js_files:
+    - file: static/js/u.js
+      name: u
+    - file: static/js/application.js
+      name: app
+      extends:
+          - u
+
+#Список шаблонов, которые должны быть закэшированы в памяти в момент запуска сервера приложения в целях оптимизации
+preload_templates:
+    - index.html
+
+Запустите сервер из example как обычно, указав порт, который был задан в upstream в конфиге nginx:
+
+python server.py --port=8889
+
+Когда для рендера шаблона используется функция из torminify
+
+self.write(self.minify.render('index.html'))
+
+В шаблон передается два дополнительных параметра:
+
+css_inlined - содержит минифицированное содержимое inlined.css для вставки в <head>
+css_js_loader - содержит код асинхронного загрузчика
+Пример использования этих переменных Вы можете увидеть в templates/base.html
+
+{% autoescape None %}<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% end %}AppCharts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    {% if css_inlined != "" %}<style type="text/css">{{ css_inlined }}</style>{% end %}
+  </head>
+  <body id="app" class="wrap wider">
+    <div class="page-header">
+      <div class="grid">
+        <div class="unit whole">
+          <a class="logo" href="/" title="Fornity"></a>
+            <ul class="nav">
+              <li><a href="/blog">Blog</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    {% block body %}{% end %}
+    <script>{{css_js_loader}}</script>
+  </body>
+</html>
+
+Важно: отключите autoescape для этих переменных.
+
+Загрузчик добавляет в глобальную область видимости функцию on.
+Ее назначение - выполнение кода в момент загрузки конкретного js файла.
+Тут и найдут применение имена файлов, которые Вы задали в watch.yaml
+
+Пример:
+<script>
+on("jquery","app",function(){
+	console.log("Эта строка будет выведена после успешной загрузки jquery.js и application.js");
+});
+</script>
+
+Так как ранее мы указали для application.js (app) зависимость от jquery.js (jquery) - вы можете передать функции on только зависимость от app:
+
+<script>
+on("app",function(){
+	console.log("Эта строка будет выведена после успешной загрузки jquery.js и application.js");
+});
+</script>
+
+Зависимости и функция on позволяют загружать файлы асинхронно, сохраняя при этом последовательность загрузки, где это нужно. Плагины jquery не будут загружены до самого jquery, а код, зависящий от конкретных плагинов будет выполнить только после их полной загрузки.
 
 
 
