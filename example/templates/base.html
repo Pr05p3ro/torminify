@@ -6,17 +6,7 @@
     {% if css_inlined != "" %}<style type="text/css">{{ css_inlined }}</style>{% end %}
   </head>
   <body id="app" class="wrap wider">
-    <div class="page-header">
-      <div class="grid">
-        <div class="unit whole">
-          <a class="logo" href="/" title="Fornity"></a>
-            <ul class="nav">
-              <li><a href="/blog">Blog</a></li>
-            </ul>
-        </div>
-      </div>
-    </div>
+  	<script>{{css_js_loader}}</script>
     {% block body %}{% end %}
-    <script>{{css_js_loader}}</script>
   </body>
 </html>

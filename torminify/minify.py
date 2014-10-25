@@ -236,7 +236,7 @@ class Minify:
 
     def get_inlined_css(self):
         for f in self.cache:
-            if f['file']==self.settings['css_inlined']:
+            if f['file']==self.settings['css_inlined'] and os.path.isfile(self.get_file_path(f['minified'])):
                 with open (self.get_file_path(f['minified']), "r") as inlined:
                     r = inlined.read().replace('\n', '')
                     inlined.close()

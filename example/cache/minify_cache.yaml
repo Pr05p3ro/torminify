@@ -1,11 +1,11 @@
-- {changed: 1414072123.617397, file: static/css/main.css, minified: static/min/main.css,
-  version: 1}
-- {changed: 1414094804.525397, file: static/css/inlined.css, minified: static/min/inlined.css,
-  version: 9}
-- {changed: 1414072123.221397, file: static/js/u.js, minified: static/min/u.js, name: u,
-  version: 1}
-- changed: 1414072123.073397
-  extends: [u]
+- {changed: 1414267567.517397, file: static/css/main.css, minified: static/min/main.css,
+  version: 4}
+- {changed: 1414267567.813397, file: static/css/inlined.css, minified: static/min/inlined.css,
+  version: 4}
+- {changed: 1414267223.189397, file: static/js/jquery-1.11.1.js, minified: static/min/jquery-1.11.1.js,
+  name: jquery, version: 1}
+- changed: 1414267219.081397
+  extends: [jquery]
   file: static/js/application.js
   minified: static/min/application.js
   name: app

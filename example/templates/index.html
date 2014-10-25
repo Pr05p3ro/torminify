@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 {% block title %}{% end %}
 {% block body %}
-<div class="content grid side-box">
+<div class="content grid">
   <div class="unit whole main-box">
     <div class="main-box-in">
-      <div class="point-header">
-        <h1>Index</h1>
+      <div class="header">
+        <h1>It works!</h1>
       </div>
+      <p>If you see this page then torminify is configured correctly.</p>
+      <p>
+      	<a target="_blank" href="https://github.com/PaulDiakov/torminify">Github</a>
+      </p>
+      <p>
+      	<a target="_blank" href="http://torminify.fornity.com">Documentation</a>
+      </p>
+      <p>
+      	Any questions? Follow me on twitter: <a target="_blank" href="http://twitter.com/pauldiakov">@pauldiakov</a>
+      </p>
     </div>
   </div>
   </div>
 </div>
+
+<script>
+on("app",function(){
+  console.log("This line will be displayed after a successful load of jquery.js and application.js");
+});
+</script>
 {% end %}

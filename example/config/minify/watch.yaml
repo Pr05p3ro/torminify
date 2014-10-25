@@ -7,13 +7,14 @@ css_files:
 #each js should have name, path to file relative to root_dir and can have extends field
 #extends is the list of all names of js files that should be loaded BEFORE current file
 js_files:
-    - file: static/js/u.js
-      name: u
+    - file: static/js/jquery-1.11.1.js
+      name: jquery
     - file: static/js/application.js
       name: app
       extends:
-          - u
+          - jquery
 
 #this tempplates will be cached in memory on servers init. Read more in documentation.
 preload_templates:
+    - base.html
     - index.html
