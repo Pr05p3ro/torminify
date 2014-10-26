@@ -123,13 +123,13 @@ closure_path: tools/compiler.jar
 
 #Директории, куда torminify будет сохранять минифицированные файлы 
 #(относительно корневой директории домена со статикой)
-css_min_dir: static/min/
-js_min_dir: static/min/
+css_min_dir: min/
+js_min_dir: min/
 
 #Этот файл будет минифицирован 
 #Его содержимое будет помещено в тег <head> 
 #Закоментируйте параметр, если не хотите использовать эту возможность
-css_inlined: static/css/inlined.css
+css_inlined: css/inlined.css
 
 #Асинхронный загрузчик javascript и css. 
 #Этот файл будет минифицирован и встроен в шаблон страницы.
@@ -148,7 +148,7 @@ templates_dir: templates/
 ---
 #Список таблиц стилей
 css_files:
-    - static/css/main.css
+    - css/main.css
 
 #Аналогичный список скриптов
 #Каждый js файл должен иметь имя, путь к файлу относительно 
@@ -159,9 +159,9 @@ css_files:
 #загрузки всех его зависимостей.
 
 js_files:
-    - file: static/js/u.js
+    - file: js/u.js
       name: u
-    - file: static/js/application.js
+    - file: js/application.js
       name: app
       extends:
           - u
