@@ -42,7 +42,7 @@
         server_name st1.fornity.com;
         location ^~ / {
             root /home/torminify/example/static/;
-    	access_log off;
+    		access_log off;
             expires max;
             add_header Pragma public;
             add_header Cache-Control "public";
