@@ -1,8 +1,10 @@
 # torminify
 Модуль Tornado Web Framework, позволяющий автомизировать минификацию css и js, легко реализовать асинхронную загрузку скриптов и дополнительных таблиц стилей, а также кэшировать в памяти скомпилированные шаблоны tornado.
 С помощью torminify вы сможете добиться максимально возможной скорости загрузки страниц: 
+
 [Demo](http://torminify.fornity.com/)
 [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Ftorminify.fornity.com%2F&tab=mobile)
+
 ## Возможности:
 - отслеживание изменений css, js файлов и шаблонов, автоматическая минификация css и js с помощью yui compressor и google closure compiler
 - кэширование шаблонов tornado в памяти. По умолчанию render tornado компилирует шаблон заново на каждый запрос.
@@ -85,7 +87,8 @@
         watch='config/minify/watch.yaml',
         #Корневая директория домена со статикой
         web_root='/var/www/torminify-demo/',
-        #Служебный файл в котором torminify будет хранить время изменения отслеживаемых файлов
+        #Служебный файл в котором torminify будет хранить 
+        #время изменения отслеживаемых файлов
         cache_index='cache/minify_cache.yaml',
         debug=True)
 ```
