@@ -170,14 +170,14 @@ preload_templates:
     - index.html
 ```
 
-# Start the server from **example/** as usual, 
-# specify the port that was used in nginx configuration file: 
+Start the server from **example/** as usual, 
+specify the port that was used in nginx configuration file: 
 
 ```
 python server.py --port=8889
 ```
 
-Когда для рендера шаблона используется функция из torminify, в шаблон передается два дополнительных параметра:
+When torminify built in function is used to render template, two additional parameters are passed:
 
 ```
 self.write(self.minify.render('index.html'))
@@ -206,7 +206,7 @@ You can see example of usage in templates/base.html
 </html>
 ```
 
-The loader adds function ** on ** into global scope. 
+The loader adds function **on** into global scope. 
 It can execute code when specific js files are loaded. 
 Here you can use file names, specified in **watch.yaml** 
 
