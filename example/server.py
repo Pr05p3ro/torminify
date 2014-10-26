@@ -14,7 +14,7 @@ class Application(tornado.web.Application):
         self.minify = Minify(
             config='config/minify/minify.yaml',
             watch='config/minify/watch.yaml',
-            web_root='/var/www/torminify-demo/',
+            web_root='/var/www/torminify/',
             cache_index='cache/minify_cache.yaml',
             debug=debug)
 

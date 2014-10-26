@@ -130,15 +130,15 @@ class Minify:
                             c['changed'] = fileChanged
                             c['version'] = c['version'] + 1
 
-                            self.minify_css(self.get_file_path(f),c['minified'])
                             self.log(f + " was changed, version " + str(c['version']) )
+                            self.minify_css(self.get_file_path(f),c['minified'])
 
                 if newFile:
                     fileDst = self.settings['css_min_dir']+os.path.basename(self.get_file_path(f))
                     self.cache.append({'file':f,'changed':fileChanged,'version':1,'minified':fileDst})
 
-                    self.minify_css(self.get_file_path(f), fileDst)
                     self.log("new css: "+f)
+                    self.minify_css(self.get_file_path(f), fileDst)
 
         for f in self.settings['js_files']:
             if (f['name']=='loader' and os.path.isfile(f['file'])) or os.path.isfile(self.get_file_path(f['file'])):
@@ -161,12 +161,11 @@ class Minify:
                             if 'extends' in f:
                                 c['extends'] = f['extends']
 
+                            self.log(f['file'] + " was changed, version " + str(c['version']) )
                             if f['name']=='loader':
                                 self.minify_js(f['file'],c['minified'])
                             else:
                                 self.minify_js(self.get_file_path(f['file']),c['minified'])
-
-                            self.log(f['file'] + " was changed, version " + str(c['version']) )
 
                 if newFile:
                     fileDst = self.settings['js_min_dir']+os.path.basename(self.get_file_path(f['file']))
@@ -176,13 +175,13 @@ class Minify:
                     else:
                         self.cache.append({'file':f['file'],'name':f['name'],'changed':fileChanged,'version':1,'minified':fileDst})    
                     
+                    self.log("new js: "+f['file'])
                     if f['name']=='loader':
                         self.minify_js(f['file'],fileDst)
                     else:
                         self.minify_js(self.get_file_path(f['file']),fileDst)
 
-                    self.log("new js: "+f['file'])
-
+        self.log("done")
         self.save_cache()
 
     def minify_css(self, fileSrc, fileDst):
