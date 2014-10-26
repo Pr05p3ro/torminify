@@ -28,7 +28,7 @@
 
 В директории **example/** находится пример tornado приложения. Для запуска необходимо переместить директорию **static/** из примера в директорию, доступную веб-серверу, и настроить пути в конфигурации модуля.
 В рамках этого туториала предположим, что корневая директория для статики
-**/var/www/torminify/**
+**/home/torminify/example/static/**
 А приложение находится в директории
 **/home/torminify/example/**
 
@@ -41,7 +41,7 @@
     listen 80;
         server_name st1.fornity.com;
         location ^~ / {
-            root /var/www/torminify;
+            root /home/torminify/example/static/;
     	access_log off;
             expires max;
             add_header Pragma public;
@@ -87,7 +87,7 @@
         #Перечень css, js и шаблонов, изменения в которых будут отслеживаться
         watch='config/minify/watch.yaml',
         #Корневая директория домена со статикой
-        web_root='/var/www/torminify-demo/',
+        web_root='/home/torminify/example/static/',
         #Служебный файл в котором torminify будет хранить 
         #время изменения отслеживаемых файлов
         cache_index='cache/minify_cache.yaml',
