@@ -31,10 +31,7 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>
-<a name="torminify" class="anchor" href="#torminify"><span class="octicon octicon-link"></span></a>torminify</h1>
-
-<p>Модуль Tornado Web Framework, позволяющий автомизировать минификацию css и js, легко реализовать асинхронную загрузку скриптов и дополнительных таблиц стилей, а также кэшировать в памяти скомпилированные шаблоны tornado.
+        <p>Модуль Tornado Web Framework, позволяющий автомизировать минификацию css и js, легко реализовать асинхронную загрузку скриптов и дополнительных таблиц стилей, а также кэшировать в памяти скомпилированные шаблоны tornado.
 С помощью torminify вы сможете добиться максимально возможной скорости загрузки страниц: </p>
 
 <p><a href="http://torminify.fornity.com/">Demo</a></p>
@@ -164,13 +161,13 @@ closure_path: tools/compiler.jar
 
 #Директории, куда torminify будет сохранять минифицированные файлы 
 #(относительно корневой директории домена со статикой)
-css_min_dir: static/min/
-js_min_dir: static/min/
+css_min_dir: min/
+js_min_dir: min/
 
 #Этот файл будет минифицирован 
 #Его содержимое будет помещено в тег &lt;head&gt; 
 #Закоментируйте параметр, если не хотите использовать эту возможность
-css_inlined: static/css/inlined.css
+css_inlined: css/inlined.css
 
 #Асинхронный загрузчик javascript и css. 
 #Этот файл будет минифицирован и встроен в шаблон страницы.
@@ -188,7 +185,7 @@ templates_dir: templates/
 <pre><code>---
 #Список таблиц стилей
 css_files:
-    - static/css/main.css
+    - css/main.css
 
 #Аналогичный список скриптов
 #Каждый js файл должен иметь имя, путь к файлу относительно 
@@ -199,9 +196,9 @@ css_files:
 #загрузки всех его зависимостей.
 
 js_files:
-    - file: static/js/u.js
+    - file: js/u.js
       name: u
-    - file: static/js/application.js
+    - file: js/application.js
       name: app
       extends:
           - u
