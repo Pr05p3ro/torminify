@@ -93,6 +93,12 @@ class Minify:
                 autoreload.watch(self.settings['templates_dir']+f)
                 self.templates.append({'file':f,'template':loader.load(f)})
 
+        if not os.path.exists(os.path.dirname(self.settings['css_min_dir'])):
+            os.makedirs(os.path.dirname(self.settings['css_min_dir']))
+
+        if not os.path.exists(os.path.dirname(self.settings['js_min_dir'])):
+            os.makedirs(os.path.dirname(self.settings['js_min_dir']))
+
         self.recompile()
 
         self.cache_css_inlined = self.get_inlined_css()
