@@ -1,41 +1,41 @@
-Модуль Tornado Web Framework, позволяющий автомизировать минификацию css и js, легко реализовать асинхронную загрузку скриптов и дополнительных таблиц стилей, а также кэшировать в памяти скомпилированные шаблоны tornado.
-С помощью torminify вы сможете добиться максимально возможной скорости загрузки страниц: 
+Module for Tornado Web Framework, allowing to automate minification of css and js files, implement easely asynchronous loading of scripts and additional stylesheets, and cache compiled tornado templates in memory. 
+With torminify you can achieve the maximum possible speed of page loading: 
 
-[Demo](http://torminify.fornity.com/)
+[Demo](http://torminify.fornity.com/) 
 
-[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Ftorminify.fornity.com%2F&tab=mobile)
+[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Ftorminify.fornity.com%2F&tab=mobile) 
 
-Any questions? Follow me on twitter: [@pauldiakov](http://twitter.com/pauldiakov)
+Any questions? Follow me on twitter: [pauldiakov](http://twitter.com/pauldiakov) 
 
-## Возможности:
-- отслеживание изменений css, js файлов и шаблонов, автоматическая минификация css и js с помощью yui compressor и google closure compiler
-- кэширование шаблонов tornado в памяти. По умолчанию render tornado компилирует шаблон заново на каждый запрос.
-- встроенный асинхронный загрузчик javascript с возможностью настройки зависимостей скриптов.
-- асинхронный загрузчик css файлов.
+## Features: 
+- Track changes in css, js files and templates, automatic minification of css and js using yui compressor and google closure compiler 
+- Caching tornado templates in memory. By default tornado render compiles templates anew on each request. 
+- Built-in asynchronous javascript loader with customizable scripts dependency. 
+- Asynchronous loader for css files. 
 
-## Зависимости:
-- pyyaml
-- tornado
+## Dependencies: 
+- pyyaml 
+- tornado 
 
-## Установка:
-Выполните 
+## Installation: 
+Run
 ```
 pip install git+https://github.com/PaulDiakov/torminify
 ```
-Или клонируйте репозитарий
+Or clone the repository
 ```
 git clone https://github.com/PaulDiakov/torminify
 ```
 
-В директории **example/** находится пример tornado приложения. Для запуска необходимо переместить директорию **static/** из примера в директорию, доступную веб-серверу, и настроить пути в конфигурации модуля.
-В рамках этого туториала предположим, что корневая директория для статики
-**/home/torminify/example/static/**
-А приложение находится в директории
-**/home/torminify/example/**
+In the directory **example/** there is an example of tornado application. At first you need to move the directory **static/** from example to the directory accessible for web server and configure the path in module configuration. 
+In this tutorial we assume that the root directory for the static domain is  
+**/home/torminify/example/static/** 
+And the application root directory is 
+**/home/torminify/example/** 
 
-Для tornado рекомендуется создавать отдельный домен для статики. Мы будем следовать этому правилу, потому конфигурация для nginx может выглядеть следующим образом:
+It is recommended to create a separate cookie-less domain for static files. We will follow this rule. Nginx configuration might look like this: 
 
-**/etc/nginx/sites/st1.fornity.com**
+**/etc/nginx/sites/st1.fornity.com** 
 
 ```
 server {
@@ -73,13 +73,13 @@ server {
 }
 ```
 
-Импортируйте библиотеку
+Import library
 
 ```
 from torminify.minify import Minify
 ```
 
-и создайте экземпляр класса 
+and create an instance of the class 
 
 ```
 self.minify = Minify(
@@ -95,67 +95,66 @@ self.minify = Minify(
     debug=True)
 ```
 
-Настройте модуль в файле **config/minify/minify.yaml**
+Configure the module in file **config/minify/minify.yaml**
 
 ```
 ---
-#Если Вы используете отдельный домен для статики - 
-#укажите его или закомментируйте параметр static_domain
+# If you use a separate domain for static - 
+# specify static_domain or comment it out 
 static_domain: http://st1.fornity.com
 
-#Отключите минификацию, чтобы ускорить перезагрузку приложения 
-#во время разработки
+# Disable Minification to accelerate application restart 
+# during development 
 minify_css: True
 minify_js: True
 
-#Укажите путь к java на вашем сервере 
-#(или просто java, если JAVA_HOME настроена корректно)
+# Specify java path on your server 
+# (or "java", if JAVA_HOME is set correctly) 
 java_path: java
 
-#Укажите пути к yui compressor и google closure compiler
+# Specify path to yui compressor and google closure compiler 
 yui_path: tools/yui.jar
 closure_path: tools/compiler.jar
 
-#и дополнительные параметры, если необходимо
+# and additional parameters, if necessary 
 #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
 #yui_additional_params: --line-break 0
 
-#Директории, куда torminify будет сохранять минифицированные файлы 
-#(относительно корневой директории домена со статикой)
+# Directory where torminify will save minified files 
+# (relative to the root directory of the statics domain) 
 css_min_dir: min/
 js_min_dir: min/
 
-#Этот файл будет минифицирован 
-#Его содержимое будет помещено в тег <head> 
-#Закоментируйте параметр, если не хотите использовать эту возможность
+# This file will be minified 
+# Its content will be placed in the <head> tag 
+# Comment out css_inlined if you do not want to use this feature 
 css_inlined: css/inlined.css
 
-#Асинхронный загрузчик javascript и css. 
-#Этот файл будет минифицирован и встроен в шаблон страницы.
+# Asynchronous javascript and css loader. 
+# This file will be minified and embedded into the page template. 
 js_loader: 
     file: config/minify/loader.js
     name: loader
 
-#Директория с шаблонами 
-#(относительно корневой директории Вашего приложения)
+# Directory with templates 
+# (relative to the root directory of your application) 
 templates_dir: templates/
 ```
 
-Добавьте в **config/minify/watch.yaml** файлы, изменения в которых должен отслеживать torminify
+Add to **config/minify/watch.yaml** files, changes in which torminify should track
 
 ```
 ---
-#Список таблиц стилей
+# List of stylesheets
 css_files:
     - css/main.css
 
-#Аналогичный список скриптов
-#Каждый js файл должен иметь имя, путь к файлу относительно 
-#корневой директории домена со статикой и опционально 
-#может содержать параметр extends со списком имен файлов 
-#от которого он зависит.
-#Если указаны зависимости - файл будет загружен только после 
-#загрузки всех его зависимостей.
+# A similar list of scripts 
+# Each js file must have a name, file path relative to 
+# root directory of the statics domain and optionaly 
+# can contain parameter "extends" - names of current file dependencies
+# If specified, file will be loaded only after 
+# load of all its dependencies. 
 
 js_files:
     - file: js/u.js
@@ -165,13 +164,14 @@ js_files:
       extends:
           - u
 
-#Список шаблонов, которые должны быть закэшированы в памяти в момент 
-#запуска сервера приложения в целях оптимизации
+# List of templates which should be cached in memory 
+# when application's server starts 
 preload_templates:
     - index.html
 ```
 
-Запустите сервер из **example/** как обычно, указав порт, который был задан в upstream в конфиге nginx:
+# Start the server from **example/** as usual, 
+# specify the port that was used in nginx configuration file: 
 
 ```
 python server.py --port=8889
@@ -182,9 +182,9 @@ python server.py --port=8889
 ```
 self.write(self.minify.render('index.html'))
 ```
-**css_inlined** - содержит минифицированное содержимое inlined.css для вставки в <head>
-**css_js_loader** - содержит код асинхронного загрузчика
-Пример использования этих переменных Вы можете увидеть в templates/base.html
+**css_inlined** - contains minified inlined.css content
+**css_js_loader** - contains the code of the asynchronous loader 
+You can see example of usage in templates/base.html
 
 ```
 <!DOCTYPE html>
@@ -206,30 +206,28 @@ self.write(self.minify.render('index.html'))
 </html>
 ```
 
-Загрузчик добавляет в глобальную область видимости функцию **on**.
-Ее назначение - выполнение кода в момент загрузки конкретного js файла.
-Тут и найдут применение имена файлов, которые Вы задали в **watch.yaml**
-
-Пример:
+The loader adds function ** on ** into global scope. 
+It can execute code when specific js files are loaded. 
+Here you can use file names, specified in **watch.yaml** 
 
 ```
 <script>
 on("jquery","app",function(){
-	console.log("Эта строка будет выведена после успешной загрузки "+
-				"jquery.js и application.js");
+	console.log("This line will be displayed after a successful load of "+
+				"jquery.js and application.js");
 });
 </script>
 ```
 
-Так как ранее мы указали для application.js (app) зависимость от jquery.js (jquery) - вы можете передать функции on только зависимость от app:
+Earlier we set for application.js (app) dependence on jquery.js (jquery), so now you can use callback like this: 
 
 ```
 <script>
 on("app",function(){
-	console.log("Эта строка будет выведена после успешной загрузки "+
-				"jquery.js и application.js");
+	console.log("This line will be displayed after a successful load of "+
+				"jquery.js and application.js");
 });
 </script>
 ```
 
-Зависимости и функция **on** позволяют загружать файлы асинхронно, сохраняя при этом последовательность загрузки, где это нужно. Плагины jquery не будут загружены до самого jquery, а код, зависящий от конкретных плагинов будет выполнить только после их полной загрузки.
+Dependencies and function **on** allows you to load files asynchronously, saving the boot order where it is needed. For example, jQuery plugins will not be loaded before jQuery and the code that depends on the particular plugin will run only after its successful load.
