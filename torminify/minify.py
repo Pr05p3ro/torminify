@@ -7,7 +7,7 @@ from tornado import template
 from shutil import copyfile
 
 class Minify:
-    version = "0.1.1"
+    version = "0.1.2"
 
     cache = []
     settings = {
@@ -55,8 +55,8 @@ class Minify:
         self.load_config(config)
         self.load_config(watch)
         
-        if not os.path.exists(cache_index):
-            os.makedirs(cache_index)
+        if not os.path.exists(os.path.dirname(cache_index)):
+            os.makedirs(os.path.dirname(cache_index))
 
         self.settings['web_root'] = web_root
         self.cache_index = cache_index
@@ -187,10 +187,8 @@ class Minify:
 
     def minify_css(self, fileSrc, fileDst):
         if self.settings['minify_css']:
-            print('minify')
             call(self.settings['java_path']+" -jar "+self.settings['yui_path']+" "+self.settings['yui_additional_params']+" " + fileSrc + " -o " + self.settings['web_root']+fileDst, shell=True)
         else: 
-            print('copy')
             copyfile(fileSrc, self.settings['web_root']+fileDst)
 
     def minify_js(self, fileSrc, fileDst):

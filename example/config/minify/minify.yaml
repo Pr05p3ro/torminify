@@ -3,9 +3,8 @@
 static_domain: http://st1.fornity.com
 minify_css: True
 minify_js: True
-#batch_css: False
 
-java_path: /usr/java/jre/bin/java
+java_path: java
 yui_path: tools/yui.jar
 closure_path: tools/compiler.jar
 #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
