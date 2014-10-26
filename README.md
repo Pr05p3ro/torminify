@@ -98,11 +98,11 @@
     #batch_css: False
     
     #Укажите путь к java на вашем сервере (или просто java, если JAVA_HOME настроена корректно)
-    java_path: /usr/java/jre/bin/java
+    java_path: java
     
     #Укажите пути к yui compressor и google closure compiler и дополнительные параметры, если необходимо. По умолчанию будут использоваться утилиты, включенные в torminify
-    #yui_path: /var/www/lgg/tools/yui.jar
-    #closure_path: /var/www/lgg/tools/compiler.jar
+    #yui_path: tools/yui.jar
+    #closure_path: tools/compiler.jar
     #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
     #yui_additional_params: --line-break 0
     
