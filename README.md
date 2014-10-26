@@ -6,6 +6,8 @@
 
 [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Ftorminify.fornity.com%2F&tab=mobile)
 
+Any questions? Follow me on twitter: [@pauldiakov](http://twitter.com/pauldiakov)
+
 ## Возможности:
 - отслеживание изменений css, js файлов и шаблонов, автоматическая минификация css и js с помощью yui compressor и google closure compiler
 - кэширование шаблонов tornado в памяти. По умолчанию render tornado компилирует шаблон заново на каждый запрос.
