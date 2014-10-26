@@ -1,11 +1,11 @@
 ---
 css_files:
-    - static/css/main.css
+    - css/main.css
 
 js_files:
-    - file: static/js/jquery-1.11.1.js
+    - file: js/jquery-1.11.1.js
       name: jquery
-    - file: static/js/application.js
+    - file: js/application.js
       name: app
       extends:
           - jquery

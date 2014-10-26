@@ -10,9 +10,9 @@ closure_path: tools/compiler.jar
 #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
 #yui_additional_params: --line-break 0
 
-css_min_dir: static/min/
-js_min_dir: static/min/
-css_inlined: static/css/inlined.css
+css_min_dir: min/
+js_min_dir: min/
+css_inlined: css/inlined.css
 
 js_loader: 
     file: config/minify/loader.js
