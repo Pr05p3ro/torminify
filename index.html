@@ -1,42 +1,37 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Torminify : ">
 
-  <title>Torminify</title>
-  <meta name="description" content="">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Torminify</title>
+  </head>
 
-</head>
+  <body>
 
-<body>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/PaulDiakov/torminify">View on GitHub</a>
 
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Torminify</h1>
-    </header>
-    <div id="container">
-      <p class="tagline"></p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/PaulDiakov/torminify/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/PaulDiakov/torminify/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/PaulDiakov/torminify" class="code">View Torminify on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h1>
+          <h1 id="project_title">Torminify</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/PaulDiakov/torminify/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/PaulDiakov/torminify/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
 <a name="torminify" class="anchor" href="#torminify"><span class="octicon octicon-link"></span></a>torminify</h1>
 
 <p>Модуль Tornado Web Framework, позволяющий автомизировать минификацию css и js, легко реализовать асинхронную загрузку скриптов и дополнительных таблиц стилей, а также кэшировать в памяти скомпилированные шаблоны tornado.
@@ -69,12 +64,12 @@
 
 <p>Выполните </p>
 
-<pre><code>    pip install git+https://github.com/PaulDiakov/torminify
+<pre><code>pip install git+https://github.com/PaulDiakov/torminify
 </code></pre>
 
 <p>Или клонируйте репозитарий</p>
 
-<pre><code>    git clone https://github.com/PaulDiakov/torminify
+<pre><code>git clone https://github.com/PaulDiakov/torminify
 </code></pre>
 
 <p>В директории <strong>example/</strong> находится пример tornado приложения. Для запуска необходимо переместить директорию <strong>static/</strong> из примера в директорию, доступную веб-серверу, и настроить пути в конфигурации модуля.
@@ -87,164 +82,165 @@
 
 <p><strong>/etc/nginx/sites/st1.fornity.com</strong></p>
 
-<pre><code>    server {
-    listen 80;
-        server_name st1.fornity.com;
-        location ^~ / {
-            root /home/torminify/example/static/;
-            access_log off;
-            expires max;
-            add_header Pragma public;
-            add_header Cache-Control "public";
-        }
+<pre><code>server {
+listen 80;
+    server_name st1.fornity.com;
+    location ^~ / {
+        root /home/torminify/example/static/;
+        access_log off;
+        expires max;
+        add_header Pragma public;
+        add_header Cache-Control "public";
     }
+}
 </code></pre>
 
 <p><strong>/etc/nginx/sites/torminify.fornity.com</strong></p>
 
-<pre><code>    upstream demo {
-        server 127.0.0.1:8889;
-    }
+<pre><code>upstream demo {
+    server 127.0.0.1:8889;
+}
 
-    server {
-        listen 80;
-        server_name torminify-demo.fornity.com;
+server {
+    listen 80;
+    server_name torminify-demo.fornity.com;
 
-        location / {
-            proxy_pass_header Server;
-            proxy_set_header Host $http_host;
-            proxy_redirect off;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Scheme $scheme;
-            proxy_pass http://demo;
-        }
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://demo;
     }
+}
 </code></pre>
 
 <p>Импортируйте библиотеку</p>
 
-<pre><code>    from torminify.minify import Minify
+<pre><code>from torminify.minify import Minify
 </code></pre>
 
 <p>и создайте экземпляр класса </p>
 
-<pre><code>    self.minify = Minify(
-        #Файл с основными настройками модуля
-        config='config/minify/minify.yaml',
-        #Перечень css, js и шаблонов, изменения в которых будут отслеживаться
-        watch='config/minify/watch.yaml',
-        #Корневая директория домена со статикой
-        web_root='/home/torminify/example/static/',
-        #Служебный файл в котором torminify будет хранить 
-        #время изменения отслеживаемых файлов
-        cache_index='cache/minify_cache.yaml',
-        debug=True)
+<pre><code>self.minify = Minify(
+    #Файл с основными настройками модуля
+    config='config/minify/minify.yaml',
+    #Перечень css, js и шаблонов, изменения в которых будут отслеживаться
+    watch='config/minify/watch.yaml',
+    #Корневая директория домена со статикой
+    web_root='/home/torminify/example/static/',
+    #Служебный файл в котором torminify будет хранить 
+    #время изменения отслеживаемых файлов
+    cache_index='cache/minify_cache.yaml',
+    debug=True)
 </code></pre>
 
 <p>Настройте модуль в файле <strong>config/minify/minify.yaml</strong></p>
 
-<pre><code>    ---
-    #Если Вы используете отдельный домен для статики - 
-    #укажите его или закомментируйте параметр static_domain
-    static_domain: http://st1.fornity.com
+<pre><code>---
+#Если Вы используете отдельный домен для статики - 
+#укажите его или закомментируйте параметр static_domain
+static_domain: http://st1.fornity.com
 
-    #Отключите минификацию, чтобы ускорить перезагрузку приложения 
-    #во время разработки
-    minify_css: True
-    minify_js: True
+#Отключите минификацию, чтобы ускорить перезагрузку приложения 
+#во время разработки
+minify_css: True
+minify_js: True
 
-    #Укажите путь к java на вашем сервере 
-    #(или просто java, если JAVA_HOME настроена корректно)
-    java_path: java
+#Укажите путь к java на вашем сервере 
+#(или просто java, если JAVA_HOME настроена корректно)
+java_path: java
 
-    #Укажите пути к yui compressor и google closure compiler
-    yui_path: tools/yui.jar
-    closure_path: tools/compiler.jar
+#Укажите пути к yui compressor и google closure compiler
+yui_path: tools/yui.jar
+closure_path: tools/compiler.jar
 
-    #и дополнительные параметры, если необходимо
-    #closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
-    #yui_additional_params: --line-break 0
+#и дополнительные параметры, если необходимо
+#closure_additional_params: --compilation_level ADVANCED_OPTIMIZATIONS
+#yui_additional_params: --line-break 0
 
-    #Директории, куда torminify будет сохранять минифицированные файлы 
-    #(относительно корневой директории домена со статикой)
-    css_min_dir: static/min/
-    js_min_dir: static/min/
+#Директории, куда torminify будет сохранять минифицированные файлы 
+#(относительно корневой директории домена со статикой)
+css_min_dir: static/min/
+js_min_dir: static/min/
 
-    #Этот файл будет минифицирован 
-    #Его содержимое будет помещено в тег &lt;head&gt; 
-    #Закоментируйте параметр, если не хотите использовать эту возможность
-    css_inlined: static/css/inlined.css
+#Этот файл будет минифицирован 
+#Его содержимое будет помещено в тег &lt;head&gt; 
+#Закоментируйте параметр, если не хотите использовать эту возможность
+css_inlined: static/css/inlined.css
 
-    #Асинхронный загрузчик javascript и css. 
-    #Этот файл будет минифицирован и встроен в шаблон страницы.
-    js_loader: 
-        file: config/minify/loader.js
-        name: loader
+#Асинхронный загрузчик javascript и css. 
+#Этот файл будет минифицирован и встроен в шаблон страницы.
+js_loader: 
+    file: config/minify/loader.js
+    name: loader
 
-    #Директория с шаблонами 
-    #(относительно корневой директории Вашего приложения)
-    templates_dir: templates/
+#Директория с шаблонами 
+#(относительно корневой директории Вашего приложения)
+templates_dir: templates/
 </code></pre>
 
 <p>Добавьте в <strong>config/minify/watch.yaml</strong> файлы, изменения в которых должен отслеживать torminify</p>
 
-<pre><code>    ---
-    #Список таблиц стилей
-    css_files:
-        - static/css/main.css
+<pre><code>---
+#Список таблиц стилей
+css_files:
+    - static/css/main.css
 
-    #Аналогичный список скриптов
-    #Каждый js файл должен иметь имя, путь к файлу относительно корневой директории 
-    #домена со статикой и опционально может содержать параметр extends со списком 
-    #имен файлов от которого он зависит.
-    #Если указаны зависимости - файл будет загружен только после загрузки 
-    #всех его зависимостей
+#Аналогичный список скриптов
+#Каждый js файл должен иметь имя, путь к файлу относительно 
+#корневой директории домена со статикой и опционально 
+#может содержать параметр extends со списком имен файлов 
+#от которого он зависит.
+#Если указаны зависимости - файл будет загружен только после 
+#загрузки всех его зависимостей.
 
-    js_files:
-        - file: static/js/u.js
-          name: u
-        - file: static/js/application.js
-          name: app
-          extends:
-              - u
+js_files:
+    - file: static/js/u.js
+      name: u
+    - file: static/js/application.js
+      name: app
+      extends:
+          - u
 
-    #Список шаблонов, которые должны быть закэшированы в памяти в момент 
-    #запуска сервера приложения в целях оптимизации
-    preload_templates:
-        - index.html
+#Список шаблонов, которые должны быть закэшированы в памяти в момент 
+#запуска сервера приложения в целях оптимизации
+preload_templates:
+    - index.html
 </code></pre>
 
 <p>Запустите сервер из <strong>example/</strong> как обычно, указав порт, который был задан в upstream в конфиге nginx:</p>
 
-<pre><code>    python server.py --port=8889
+<pre><code>python server.py --port=8889
 </code></pre>
 
 <p>Когда для рендера шаблона используется функция из torminify, в шаблон передается два дополнительных параметра:</p>
 
-<pre><code>    self.write(self.minify.render('index.html'))
+<pre><code>self.write(self.minify.render('index.html'))
 </code></pre>
 
 <p><strong>css_inlined</strong> - содержит минифицированное содержимое inlined.css для вставки в </p>
 <strong>css_js_loader</strong> - содержит код асинхронного загрузчика
 Пример использования этих переменных Вы можете увидеть в templates/base.html
 
-<pre><code>    &lt;!DOCTYPE html&gt;
-    &lt;html&gt;
-      &lt;head&gt;
-        &lt;title&gt;{% block title %}{% end %}Torminify Demo&lt;/title&gt;
-        &lt;meta 
-            name="viewport" 
-            content="width=device-width, initial-scale=1.0, user-scalable=no" 
-        /&gt;
-        {% if css_inlined != "" %}
-            &lt;style type="text/css"&gt;{% raw css_inlined %}&lt;/style&gt;
-        {% end %}
-      &lt;/head&gt;
-      &lt;body id="app" class="wrap wider"&gt;
-        &lt;script&gt;{% raw css_js_loader %}&lt;/script&gt;
-        {% block body %}{% end %}
-      &lt;/body&gt;
-    &lt;/html&gt;
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;{% block title %}{% end %}Torminify Demo&lt;/title&gt;
+    &lt;meta 
+        name="viewport" 
+        content="width=device-width,initial-scale=1.0,user-scalable=no" 
+    /&gt;
+    {% if css_inlined != "" %}
+        &lt;style type="text/css"&gt;{% raw css_inlined %}&lt;/style&gt;
+    {% end %}
+  &lt;/head&gt;
+  &lt;body id="app" class="wrap wider"&gt;
+    &lt;script&gt;{% raw css_js_loader %}&lt;/script&gt;
+    {% block body %}{% end %}
+  &lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
 
 <p>Загрузчик добавляет в глобальную область видимости функцию <strong>on</strong>.
@@ -253,46 +249,37 @@
 
 <p>Пример:</p>
 
-<pre><code>    &lt;script&gt;
-    on("jquery","app",function(){
-        console.log("Эта строка будет выведена после успешной загрузки "+
-                    "jquery.js и application.js");
-    });
-    &lt;/script&gt;
+<pre><code>&lt;script&gt;
+on("jquery","app",function(){
+    console.log("Эта строка будет выведена после успешной загрузки "+
+                "jquery.js и application.js");
+});
+&lt;/script&gt;
 </code></pre>
 
 <p>Так как ранее мы указали для application.js (app) зависимость от jquery.js (jquery) - вы можете передать функции on только зависимость от app:</p>
 
-<pre><code>    &lt;script&gt;
-    on("app",function(){
-        console.log("Эта строка будет выведена после успешной загрузки "+
-                    "jquery.js и application.js");
-    });
-    &lt;/script&gt;
+<pre><code>&lt;script&gt;
+on("app",function(){
+    console.log("Эта строка будет выведена после успешной загрузки "+
+                "jquery.js и application.js");
+});
+&lt;/script&gt;
 </code></pre>
 
 <p>Зависимости и функция <strong>on</strong> позволяют загружать файлы асинхронно, сохраняя при этом последовательность загрузки, где это нужно. Плагины jquery не будут загружены до самого jquery, а код, зависящий от конкретных плагинов будет выполнить только после их полной загрузки.</p>
-        </article>
-      </div>
+      </section>
     </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/PaulDiakov" class="avatar"><img src="https://avatars2.githubusercontent.com/u/9365351?v=2&amp;s=60" width="48" height="48"></a> <a href="https://github.com/PaulDiakov">PaulDiakov</a> maintains <a href="https://github.com/PaulDiakov/torminify">Torminify</a></p>
 
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Torminify maintained by <a href="https://github.com/PaulDiakov">PaulDiakov</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
 
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/PaulDiakov/torminify/tarball/master" class="tar">tar</a><a href="https://github.com/PaulDiakov/torminify/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-            <script type="text/javascript">
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -303,5 +290,6 @@
             } catch(err) {}
           </script>
 
-</body>
+
+  </body>
 </html>
