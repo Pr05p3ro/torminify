@@ -5,7 +5,7 @@ With torminify you can achieve the maximum possible speed of page loading:
 
 [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Ftorminify.fornity.com%2F&tab=mobile) 
 
-Any questions? Follow me on twitter: [pauldiakov](http://twitter.com/pauldiakov) 
+Any questions? Follow me on twitter: [@pauldiakov](http://twitter.com/pauldiakov) 
 
 ## Features: 
 - Track changes in css, js files and templates, automatic minification of css and js using yui compressor and google closure compiler 
