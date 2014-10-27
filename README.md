@@ -20,6 +20,10 @@ Any questions? Follow me on twitter: [@pauldiakov](http://twitter.com/pauldiakov
 ## Installation: 
 Run
 ```
+pip install torminify
+```
+Or
+```
 pip install git+https://github.com/PaulDiakov/torminify
 ```
 Or clone the repository
