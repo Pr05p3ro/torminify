@@ -6,7 +6,7 @@ setup(name="torminify",
     author="Paul Diakov",
     author_email='paul.diakov@gmail.com',
     platforms=["any"],
-    license="BSD",
+    license="MIT",
     url="https://github.com/PaulDiakov/torminify",
     packages=find_packages()
 )
