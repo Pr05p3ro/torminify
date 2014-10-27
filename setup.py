@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 setup(name="torminify",
-    install_requires=['pyyaml','tornado'],
+    install_requires=['pyyaml>=3.11','tornado>=3.0.2'],
     version="0.1.3",
     description="",
     author="Paul Diakov",
