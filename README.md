@@ -1,4 +1,4 @@
-Module for Tornado Web Framework, designed to automate minification of css and js files, easily implement asynchronous loading of scripts and additional stylesheets, and cache compiled tornado templates in memory.
+Module for Tornado Web Server, designed to automate minification of css and js files, easily implement asynchronous loading of scripts and additional stylesheets, and cache compiled tornado templates in memory.
 With torminify you can achieve the maximum possible speed of page loading:
 
 [Demo](http://torminify.fornity.com/) 
