@@ -93,12 +93,6 @@ class Minify:
                 autoreload.watch(self.settings['templates_dir']+f)
                 self.templates.append({'file':f,'template':loader.load(f)})
 
-        if not os.path.exists(os.path.dirname(self.settings['css_min_dir'])):
-            os.makedirs(os.path.dirname(self.settings['css_min_dir']))
-
-        if not os.path.exists(os.path.dirname(self.settings['js_min_dir'])):
-            os.makedirs(os.path.dirname(self.settings['js_min_dir']))
-
         self.recompile()
 
         self.cache_css_inlined = self.get_inlined_css()
@@ -140,7 +134,7 @@ class Minify:
                             self.minify_css(self.get_file_path(f),c['minified'])
 
                 if newFile:
-                    fileDst = self.settings['css_min_dir']+os.path.basename(self.get_file_path(f))
+                    fileDst = self.settings['css_min_dir'] + f
                     self.cache.append({'file':f,'changed':fileChanged,'version':1,'minified':fileDst})
 
                     self.log("new css: "+f)
@@ -174,8 +168,8 @@ class Minify:
                                 self.minify_js(self.get_file_path(f['file']),c['minified'])
 
                 if newFile:
-                    fileDst = self.settings['js_min_dir']+os.path.basename(self.get_file_path(f['file']))
-                    
+                    fileDst = self.settings['js_min_dir'] + (os.path.basename(f['file']) if f['name']=='loader' else f['file'])
+
                     if 'extends' in f:
                         self.cache.append({'file':f['file'],'name':f['name'],'extends':f['extends'],'changed':fileChanged,'version':1,'minified':fileDst})
                     else:
@@ -192,15 +186,15 @@ class Minify:
 
     def minify_css(self, fileSrc, fileDst):
         if self.settings['minify_css']:
-            call(self.settings['java_path']+" -jar "+self.settings['yui_path']+" "+self.settings['yui_additional_params']+" " + fileSrc + " -o " + self.settings['web_root']+fileDst, shell=True)
+            call(self.settings['java_path']+" -jar "+self.settings['yui_path']+" "+self.settings['yui_additional_params']+" " + fileSrc + " -o " + self.get_file_path(fileDst), shell=True)
         else: 
-            copyfile(fileSrc, self.settings['web_root']+fileDst)
+            copyfile(fileSrc, self.get_file_path(fileDst))
 
     def minify_js(self, fileSrc, fileDst):
         if self.settings['minify_js']:
-            call(self.settings['java_path']+" -jar "+self.settings['closure_path']+" "+self.settings['closure_additional_params']+" --js " + fileSrc + " --js_output_file " + self.settings['web_root']+fileDst, shell=True)
+            call(self.settings['java_path']+" -jar "+self.settings['closure_path']+" "+self.settings['closure_additional_params']+" --js " + fileSrc + " --js_output_file " + self.get_file_path(fileDst), shell=True)
         else:
-            copyfile(fileSrc, self.settings['web_root']+fileDst)
+            copyfile(fileSrc, self.get_file_path(fileDst))
 
     def save_cache(self):
         new_cache = []
@@ -227,16 +221,26 @@ class Minify:
             outfile.close()
 
     def load_cache(self):
+        cache = []
+
         if os.path.isfile(self.cache_index):
             with open(self.cache_index, 'r') as f:
-                j = yaml.safe_load(f)
+                data = yaml.safe_load(f)
                 f.close()
-                return j
 
-        return []
+                for c in data:
+                    if os.path.isfile(self.get_file_path(c['minified'])) and os.path.isfile(self.get_file_path(c['file'])):
+                        cache.append(c)
+
+        return cache
 
     def get_file_path(self, local_file):
-        return self.settings['web_root']+local_file
+        path = self.settings['web_root'] + local_file
+
+        if not os.path.exists(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
+
+        return path
 
     def get_inlined_css(self):
         for f in self.cache:
