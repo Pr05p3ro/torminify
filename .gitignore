@@ -53,3 +53,6 @@ docs/_build/
 # PyBuilder
 target/
 *.json
+
+/example/cache/
+/example/static/min/
