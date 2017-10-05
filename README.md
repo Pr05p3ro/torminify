@@ -81,14 +81,12 @@ and create an instance of the class
 
 ```
 self.minify = Minify(
-	#Файл с основными настройками модуля
     config='config/minify/minify.yaml',
-    #Перечень css, js и шаблонов, изменения в которых будут отслеживаться
+    #List of css, js files and templates in which changes will be tracked
     watch='config/minify/watch.yaml',
-    #Корневая директория домена со статикой
-    web_root='/home/torminify/example/static/',
-    #Служебный файл в котором torminify будет хранить 
-    #время изменения отслеживаемых файлов
+    #Root static files directory
+    web_root='static/',
+    #The service file in which torminify will store time when files were last modified, path to minified files, etc
     cache_index='cache/minify_cache.yaml',
     debug=True)
 ```
@@ -99,7 +97,7 @@ Configure the module in file **config/minify/minify.yaml**
 ---
 # If you use a separate domain for static - 
 # specify static_domain or comment it out 
-static_domain: http://st1.fornity.com
+#static_domain: http://static.example.com
 
 # Disable Minification to accelerate application restart 
 # during development 

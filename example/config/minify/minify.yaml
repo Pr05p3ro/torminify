@@ -1,6 +1,6 @@
 ---
 #Uncomment this if you have separate domain for static files (recommended)
-static_domain: http://st1.fornity.com
+#static_domain: http://static.example.com
 minify_css: True
 minify_js: True
 

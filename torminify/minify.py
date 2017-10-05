@@ -229,7 +229,7 @@ class Minify:
                 f.close()
 
                 for c in data:
-                    if os.path.isfile(self.get_file_path(c['minified'])) and os.path.isfile(self.get_file_path(c['file'])):
+                    if os.path.isfile(self.get_file_path(c['minified'])) and (('name' in c and c['name']=='loader' and os.path.isfile(c['file'])) or os.path.isfile(self.get_file_path(c['file']))):
                         cache.append(c)
 
         return cache
@@ -253,6 +253,9 @@ class Minify:
 
         return ""
 
+    def get_static_root(self):
+        return (self.settings['static_domain'] + "/") if self.settings['static_domain'] else self.settings['web_root']
+
     def get_js_str(self):
         l = []
         for f in self.cache:
@@ -261,13 +264,13 @@ class Minify:
                     l.append({
                         'name':f['name'],
                         'extends':f['extends'],
-                        'js':self.settings['static_domain']+"/"+f['minified'],
+                        'js':self.get_static_root()+f['minified'],
                         'version':f['version']
                     })
                 else:
                     l.append({
                         'name':f['name'],
-                        'js':self.settings['static_domain']+"/"+f['minified'],
+                        'js':self.get_static_root()+f['minified'],
                         'version':f['version']
                     })
 
@@ -279,7 +282,7 @@ class Minify:
             if 'name' not in f and f['file']!=self.settings['css_inlined']:
                 if s != "['":
                     s += ",'"
-                s += self.settings['static_domain']+"/"+f['minified']+"?"+str(f['version'])+"'"
+                s += self.get_static_root()+f['minified']+"?"+str(f['version'])+"'"
 
         return s+"]"
 

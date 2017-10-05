@@ -1,5 +1,6 @@
 import tornado.ioloop
 import tornado.web
+import os
 import sys
 from tornado import autoreload
 from base import Index
@@ -20,6 +21,7 @@ class Application(tornado.web.Application):
 
         settings = dict(
             cookie_secret = 'FDfsdvcvbsg4354ggfDrbX365G===4354c%$^@mj',
+            static_path = os.path.join(os.path.dirname(__file__), "static"),
             debug = debug,
             autoreload = debug,
             minify = self.minify
